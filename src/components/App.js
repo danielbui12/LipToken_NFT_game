@@ -1,70 +1,100 @@
-import React, { Component } from 'react';
-import Web3 from 'web3'
+import React from 'react';
 import './App.css';
-import MemoryToken from '../abis/MemoryToken.json'
-import brain from '../brain.png'
+import { useDispatch, useSelector } from 'react-redux';
+import { handleConnect } from '../redux/blockchain/blockchainActions'
+import { handleFetchData } from '../redux/data/dataActions'
+import '../styled/reset.css'
+import '../styled/theme.css'
+import * as s from '../styled/globalStyles'
 
-class App extends Component {
+function App() {
+  const dispatch = useDispatch()
+  const blockchain = useSelector(state => state.blockchain)
+  const data = useSelector(state => state.data)
 
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      account: '0x0'
+  React.useEffect(() => {
+    if (blockchain.account && blockchain.lipToken) {
+      dispatch(handleFetchData(blockchain.lipToken, blockchain.account))
     }
+  }, [dispatch, blockchain.account, blockchain.lipToken]);
+
+  const mintNFT = (account, _name) => {
+    blockchain.lipToken.methods
+      .createRandomLip(_name)
+      .send({ from: account, value: 1e+16 })
+      .once("error", (err) => {
+        console.log('mint nft error', err)
+      })
+      .then((receipt) => {
+        console.log('receipt', receipt)
+        dispatch(handleFetchData(blockchain.lipToken, account))
+      })
   }
 
-  render() {
-    return (
-      <div>
-        <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-          <a
-            className="navbar-brand col-sm-3 col-md-2 mr-0"
-            href="http://www.dappuniversity.com/bootcamp"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-          <img src={brain} width="30" height="30" className="d-inline-block align-top" alt="" />
-          &nbsp; Memory Tokens
-          </a>
-          <ul className="navbar-nav px-3">
-            <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
-              <small className="text-muted"><span id="account">{this.state.account}</span></small>
-            </li>
-          </ul>
-        </nav>
-        <div className="container-fluid mt-5">
-          <div className="row">
-            <main role="main" className="col-lg-12 d-flex text-center">
-              <div className="content mr-auto ml-auto">
-                <h1 className="d-4">Edit this file in App.js!</h1>
+  return (
+    <s.Screen>
+      <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+        <a
+          className="navbar-brand col-sm-3 col-md-2 mr-0"
+          href="http://facebook.com/huytung.novers"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <s.TextTitle>&nbsp; Lip Tokens</s.TextTitle>
+        </a>
+        <ul className="navbar-nav px-3">
+          <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
+            <small className="text-muted"><s.TextSubTitle>{blockchain.account || "0x0"}</s.TextSubTitle></small>
+          </li>
+        </ul>
+      </nav>
 
-                <div className="grid mb-4" >
+      <div className="container-fluid mt-5">
+        <div className="row">
+          <main role="main" className="col-lg-12 d-flex text-center">
+            <div className="content mr-auto ml-auto">
+              {
+                !blockchain.account ||
+                  !blockchain.lipToken ? (
+                  <button onClick={(e) => {
+                    e.preventDefault()
+                    dispatch(handleConnect())
+                  }}>Connect to the game with metamask</button>
+                ) : (
+                  <>
+                    <s.TextTitle>Welcome to the game</s.TextTitle>
+                    <button onClick={(e) => {
+                      e.preventDefault()
+                      mintNFT(blockchain.account, "BUI HUY TUNG :)")
+                    }}>Create new random lip</button>
+                  </>
+                )
+              }
 
-                  {/* Code goes here... */}
+              <s.SpacerSmall />
+              <s.Container fd={"row"} style={{ flexWrap: 'wrap' }} jc={"space-between"}>
 
-                </div>
+                {
+                  data.allLips && data.allLips.map(item => {
+                    return (
+                      <s.Container key={Math.random()}>
+                        <s.TextDescription>ID: {item.id.toString()}</s.TextDescription>
+                        <s.TextDescription>DNA: {item.dna.toString()}</s.TextDescription>
+                        <s.TextDescription>LEVEL: {item.level}</s.TextDescription>
+                        <s.TextDescription>RARITY: {item.rarity}</s.TextDescription>
+                        <s.TextDescription>NAME: {item.name}</s.TextDescription>
+                      </s.Container>
+                    )
+                  })
+                }
+              </s.Container>
+            </div>
 
-                <div>
-
-                  {/* Code goes here... */}
-
-                  <div className="grid mb-4" >
-
-                    {/* Code goes here... */}
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </main>
-          </div>
+          </main>
         </div>
       </div>
-    );
-  }
+    </s.Screen>
+  );
 }
 
 export default App;

@@ -9,7 +9,7 @@ contract LipToken is ERC721, Ownable {
     constructor() ERC721("Lip Token", "LPT") {}
 
     uint256 COUNTER = 0;
-    uint256 fee = 1 ether;
+    uint256 fee = 0.01 ether;
 
     struct Lip {
         string name;
@@ -20,6 +20,7 @@ contract LipToken is ERC721, Ownable {
     }
 
     Lip[] public lips;
+    mapping(address => Lip[]) ownerLips;
 
     event NewLipCreated(address indexed owner, uint256 id, uint256 dna);
 
@@ -46,6 +47,7 @@ contract LipToken is ERC721, Ownable {
         uint8 randomRarity = uint8(_generateRandomNum(100));
         Lip memory newLip = Lip(_name, COUNTER, randomDna, 1, randomRarity);
         lips.push(newLip);
+        ownerLips[msg.sender].push(newLip);
         _safeMint(msg.sender, COUNTER);
         emit NewLipCreated(msg.sender, COUNTER, randomDna);
     }
@@ -57,5 +59,22 @@ contract LipToken is ERC721, Ownable {
 
     function getLips() public view returns (Lip[] memory) {
         return lips;
+    }
+
+    // other way to get owner lips
+    // function getOwnerLips(address _owner) public view returns (Lip[] memory) {
+    //     Lip[] memory result = new Lip[](balanceOf(_owner));
+    //     uint256 counter = 0;
+    //     for (uint256 i = 0; i < lips.length; i++) {
+    //         if (ownerOf(i) == _owner) {
+    //             result[counter] = lips[i];
+    //             counter++;
+    //         }
+    //     }
+    //     return result;
+    // }
+
+    function getAddressLips(address _owner) public view returns (Lip[] memory) {
+        return ownerLips[_owner];
     }
 }

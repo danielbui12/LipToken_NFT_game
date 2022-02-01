@@ -11,12 +11,12 @@ const blockchainReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.CONNECTION_REQUEST:
       return {
-        ...state,
+        ...initialState,
         loading: true
       }
     case actionTypes.CONNECTION_SUCCESS:
       return {
-        ...state,
+        ...initialState,
         account: action.payload.account,
         loading: false,
         lipToken: action.payload.lipToken,
@@ -31,9 +31,11 @@ const blockchainReducer = (state = initialState, action) => {
     case actionTypes.UPDATE_ACCOUNT:
       return {
         ...initialState,
-        account: action.payload.account
+        account: action.payload
       }
     default:
       return state
   }
 }
+
+export default blockchainReducer

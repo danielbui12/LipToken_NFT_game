@@ -4,9 +4,11 @@ import {
 } from 'redux'
 import thunk from 'redux-thunk'
 import blockchainReducer from './blockchain/blockchainReducer'
+import dataReducer from './data/dataReducer'
 
 const rootReducer = combineReducers({
-  blockchain: blockchainReducer
+  blockchain: blockchainReducer,
+  data: dataReducer
 })
 
 const middlewares = [thunk]
