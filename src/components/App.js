@@ -6,11 +6,15 @@ import { handleFetchData } from '../redux/data/dataActions'
 import '../styled/reset.css'
 import '../styled/theme.css'
 import * as s from '../styled/globalStyles'
+import LipRenderer from './lipRenderer';
+
+const _color = window.origin + "/images/bg/_color.png"
 
 function App() {
   const dispatch = useDispatch()
   const blockchain = useSelector(state => state.blockchain)
   const data = useSelector(state => state.data)
+  const [loading, setLoading] = React.useState(false)
 
   React.useEffect(() => {
     if (blockchain.account && blockchain.lipToken) {
@@ -18,21 +22,41 @@ function App() {
     }
   }, [dispatch, blockchain.account, blockchain.lipToken]);
 
-  const mintNFT = (account, _name) => {
+  const mintNFT = (_name) => {
+    setLoading(true);
     blockchain.lipToken.methods
       .createRandomLip(_name)
-      .send({ from: account, value: 1e+16 })
+      .send({
+        from: blockchain.account,
+        value: blockchain.web3.utils.toWei("0.01", "ether"),
+      }, () => {
+        setLoading(false);
+        dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
+      })
       .once("error", (err) => {
-        console.log('mint nft error', err)
+        setLoading(false);
+        console.log(err);
       })
-      .then((receipt) => {
-        console.log('receipt', receipt)
-        dispatch(handleFetchData(blockchain.lipToken, account))
+  };
+
+  const handleLevelUpLip = (_id) => {
+    setLoading(true);
+    blockchain.lipToken.methods
+      .levelUp(_id)
+      .send({
+        from: blockchain.account
+      }, () => {
+        setLoading(false);
+        dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
       })
-  }
+      .once("error", (err) => {
+        setLoading(false);
+        console.log(err);
+      })
+  };
 
   return (
-    <s.Screen>
+    <s.Screen image={_color}>
       <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
         <a
           className="navbar-brand col-sm-3 col-md-2 mr-0"
@@ -63,26 +87,44 @@ function App() {
                 ) : (
                   <>
                     <s.TextTitle>Welcome to the game</s.TextTitle>
-                    <button onClick={(e) => {
+                    <button disabled={loading} onClick={(e) => {
                       e.preventDefault()
-                      mintNFT(blockchain.account, "BUI HUY TUNG :)")
+                      mintNFT("BUI HUY TUNG :)")
                     }}>Create new random lip</button>
+                  </>
+                )
+              }
+              {
+                blockchain.errMesg && (
+                  <>
+                    <s.SpacerXSmall />
+                    <s.TextDescription>{blockchain.errMesg}</s.TextDescription>
                   </>
                 )
               }
 
               <s.SpacerSmall />
-              <s.Container fd={"row"} style={{ flexWrap: 'wrap' }} jc={"space-between"}>
+              <s.Container fd={"row"} style={{ flexWrap: 'wrap', gap: '3em' }} jc={"center"}>
 
                 {
                   data.allLips && data.allLips.map(item => {
                     return (
                       <s.Container key={Math.random()}>
-                        <s.TextDescription>ID: {item.id.toString()}</s.TextDescription>
-                        <s.TextDescription>DNA: {item.dna.toString()}</s.TextDescription>
-                        <s.TextDescription>LEVEL: {item.level}</s.TextDescription>
-                        <s.TextDescription>RARITY: {item.rarity}</s.TextDescription>
-                        <s.TextDescription>NAME: {item.name}</s.TextDescription>
+
+                        <LipRenderer lip={item} />
+                        <s.SpacerXSmall />
+                        <s.Container>
+                          <s.TextDescription>ID: {item.id.toString()}</s.TextDescription>
+                          <s.TextDescription>DNA: {item.dna.toString()}</s.TextDescription>
+                          <s.TextDescription>LEVEL: {item.level}</s.TextDescription>
+                          <s.TextDescription>RARITY: {item.rarity}</s.TextDescription>
+                          <s.TextDescription>NAME: {item.name}</s.TextDescription>
+                          <s.SpacerXSmall />
+                          <button disabled={loading} onClick={(e) => {
+                            e.preventDefault()
+                            handleLevelUpLip(parseInt(item.id.toString()))
+                          }}>Level up</button>
+                        </s.Container>
                       </s.Container>
                     )
                   })
