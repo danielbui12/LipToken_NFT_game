@@ -29,13 +29,13 @@ function App() {
       .send({
         from: blockchain.account,
         value: blockchain.web3.utils.toWei("0.01", "ether"),
-      }, () => {
+      }, (err) => {
+        if (!err) {
+          dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
+        } else {
+          alert("Error payment")
+        }
         setLoading(false);
-        dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
-      })
-      .once("error", (err) => {
-        setLoading(false);
-        console.log(err);
       })
   };
 
@@ -44,14 +44,17 @@ function App() {
     blockchain.lipToken.methods
       .levelUp(_id)
       .send({
-        from: blockchain.account
-      }, () => {
+        from: blockchain.account,
+        value: blockchain.web3.utils.toWei("0.01", "ether")
+      }, (err) => {
+        if (!err) {
+          setTimeout(() => {
+            dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
+          }, 300)
+        } else {
+          alert("You have to wait 1 day to level up your lip")
+        }
         setLoading(false);
-        dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
-      })
-      .once("error", (err) => {
-        setLoading(false);
-        console.log(err);
       })
   };
 
@@ -87,6 +90,7 @@ function App() {
                 ) : (
                   <>
                     <s.TextTitle>Welcome to the game</s.TextTitle>
+                    <s.SpacerSmall />
                     <button disabled={loading} onClick={(e) => {
                       e.preventDefault()
                       mintNFT("BUI HUY TUNG :)")
@@ -107,7 +111,8 @@ function App() {
               <s.Container fd={"row"} style={{ flexWrap: 'wrap', gap: '3em' }} jc={"center"}>
 
                 {
-                  data.allLips && data.allLips.map(item => {
+                  data.allOwnerLips && data.allOwnerLips.map(item => {
+                    console.log(item)
                     return (
                       <s.Container key={Math.random()}>
 
@@ -119,6 +124,7 @@ function App() {
                           <s.TextDescription>LEVEL: {item.level}</s.TextDescription>
                           <s.TextDescription>RARITY: {item.rarity}</s.TextDescription>
                           <s.TextDescription>NAME: {item.name}</s.TextDescription>
+                          <s.TextDescription>WAIT TIME: {new Date(Number(item.readyTime.toString() + "000")).toDateString()}</s.TextDescription>
                           <s.SpacerXSmall />
                           <button disabled={loading} onClick={(e) => {
                             e.preventDefault()

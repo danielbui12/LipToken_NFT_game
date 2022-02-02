@@ -10,6 +10,8 @@ contract LipToken is ERC721, Ownable {
 
     uint256 COUNTER;
     uint256 fee = 0.01 ether;
+    uint256 levelUpFee = 0.01 ether;
+    uint256 cooldownTime = 1 days;
 
     struct Lip {
         string name;
@@ -17,6 +19,7 @@ contract LipToken is ERC721, Ownable {
         uint256 dna;
         uint8 level;
         uint8 rarity;
+        uint32 readyTime;
     }
 
     Lip[] public lips;
@@ -36,15 +39,44 @@ contract LipToken is ERC721, Ownable {
         fee = _fee;
     }
 
+    function setLevelUpFee(uint256 _fee) external onlyOwner {
+        levelUpFee = _fee;
+    }
+
     function withDraw() external payable onlyOwner {
         address payable _owner = payable(owner());
         _owner.transfer(address(this).balance);
     }
 
+    modifier aboveLevel(uint256 _level, uint256 _lipId) {
+        require(lips[_lipId].level >= _level);
+        _;
+    }
+
+    modifier onlyOwnerOf(uint256 _lipId) {
+        require(ownerOf(_lipId) == msg.sender);
+        _;
+    }
+
+    function _triggerCooldown(Lip storage _lip) internal {
+        _lip.readyTime = uint32(block.timestamp + cooldownTime);
+    }
+
+    function _isReady(Lip storage _lip) internal view returns (bool) {
+        return (_lip.readyTime <= block.timestamp);
+    }
+
     function _createLip(string memory _name) internal {
         uint256 randomDna = _generateRandomNum(10**16);
         uint8 randomRarity = uint8(_generateRandomNum(100));
-        Lip memory newLip = Lip(_name, COUNTER, randomDna, 1, randomRarity);
+        Lip memory newLip = Lip(
+            _name,
+            COUNTER,
+            randomDna,
+            1,
+            randomRarity,
+            uint32(block.timestamp + cooldownTime)
+        );
         lips.push(newLip);
         ownerLips[msg.sender].push(newLip);
         _safeMint(msg.sender, COUNTER);
@@ -78,9 +110,19 @@ contract LipToken is ERC721, Ownable {
         return ownerLips[_owner];
     }
 
-    function levelUp(uint256 _lipId) public {
-        require(ownerOf(_lipId) == msg.sender);
+    function levelUp(uint256 _lipId) public payable onlyOwnerOf(_lipId) {
         Lip storage lip = lips[_lipId];
+        require(_isReady(lip));
+        require(msg.value >= levelUpFee);
         lip.level++;
+        _triggerCooldown(lip);
+    }
+
+    function changeName(uint256 _lipId, string calldata _newName)
+        external
+        aboveLevel(2, _lipId)
+        onlyOwnerOf(_lipId)
+    {
+        lips[_lipId].name = _newName;
     }
 }
