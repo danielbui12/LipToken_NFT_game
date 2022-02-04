@@ -66,6 +66,7 @@ export const TextDescription = styled.p`
   color: var(--white);
   font-size: 14px;
   font-weight: 600;
+  margin: ${({ margin }) => (margin ? margin : "none")};
 `;
 
 export const StyledClickable = styled.div`

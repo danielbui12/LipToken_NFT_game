@@ -12,6 +12,7 @@ contract LipToken is ERC721, Ownable {
     uint256 fee = 0.01 ether;
     uint256 levelUpFee = 0.01 ether;
     uint256 cooldownTime = 1 days;
+    uint256 clearTimeFee = 0.015 ether;
 
     struct Lip {
         string name;
@@ -66,6 +67,38 @@ contract LipToken is ERC721, Ownable {
         return (_lip.readyTime <= block.timestamp);
     }
 
+    function quickSortLevel(
+        Lip[] memory arr,
+        int256 left,
+        int256 right
+    ) public pure {
+        int256 i = left;
+        int256 j = right;
+        if (i == j) return;
+        Lip memory pivot = arr[uint256(left + (right - left) / 2)];
+        while (i <= j) {
+            while (arr[uint256(i)].level < pivot.level) i++;
+            while (pivot.level < arr[uint256(j)].level) j--;
+            if (i <= j) {
+                (arr[uint256(i)], arr[uint256(j)]) = (
+                    arr[uint256(j)],
+                    arr[uint256(i)]
+                );
+                i++;
+                j--;
+            }
+        }
+        if (left < j) quickSortLevel(arr, left, j);
+        if (i < right) quickSortLevel(arr, i, right);
+    }
+
+    function sort(Lip[] memory data) public pure returns (Lip[] memory) {
+        quickSortLevel(data, int256(0), int256(data.length - 1));
+        return data;
+    }
+
+    // ==================== //
+
     function _createLip(string memory _name) internal {
         uint256 randomDna = _generateRandomNum(10**16);
         uint8 randomRarity = uint8(_generateRandomNum(100));
@@ -90,7 +123,8 @@ contract LipToken is ERC721, Ownable {
     }
 
     function getLips() public view returns (Lip[] memory) {
-        return lips;
+        Lip[] memory sortedLipLevel = sort(lips);
+        return sortedLipLevel;
     }
 
     // other way to get owner lips
@@ -124,5 +158,11 @@ contract LipToken is ERC721, Ownable {
         onlyOwnerOf(_lipId)
     {
         lips[_lipId].name = _newName;
+    }
+
+    function clearWaitTime(uint256 _lipId) public payable onlyOwnerOf(_lipId) {
+        require(msg.value >= clearTimeFee);
+        Lip storage lip = lips[_lipId];
+        lip.readyTime = uint32(10);
     }
 }

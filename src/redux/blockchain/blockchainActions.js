@@ -58,7 +58,7 @@ export const handleConnect = () => {
           })
         } else {
           // add listeners end
-          dispatch(connectFailed("Change network to Polygon."))
+          dispatch(connectFailed("Change network to ETH."))
         }
       } catch (error) {
         dispatch(connectFailed('Non-Ethereum browser detected. You should consider trying MetaMask!'))
