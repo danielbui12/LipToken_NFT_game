@@ -34,13 +34,13 @@ function OwnLip() {
       })
   };
 
-  const handleLevelUpLip = (_id) => {
+  const handleLevelUpLip = (lip) => {
     setLoading(true);
     blockchain.lipToken.methods
-      .levelUp(_id)
+      .levelUp(parseInt(lip.id.toString()))
       .send({
         from: blockchain.account,
-        value: blockchain.web3.utils.toWei("0.01", "ether")
+        value: blockchain.web3.utils.toWei((0.01 * lip.level).toString(), "ether")
       }, (err) => {
         if (!err) {
           setTimeout(() => {
@@ -62,7 +62,7 @@ function OwnLip() {
         if (!err) {
           setTimeout(() => {
             dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
-          }, 300)
+          }, 500)
         } else {
           alert("Your lip must be at least level 2 to change it's name.")
         }
@@ -81,7 +81,7 @@ function OwnLip() {
         if (!err) {
           setTimeout(() => {
             dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
-          }, 300)
+          }, 500)
         } else {
           alert("Your account is not enough eth.")
         }

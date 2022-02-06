@@ -23,8 +23,8 @@ export const handleFetchData = (lipToken, account) => {
   return async (dispatch) => {
     dispatch(fetchDataRequest())
     try {
-      let allOwnerLips = await lipToken.methods.getAddressLips(account).call()
-      let allLips = await lipToken.methods.getLips().call();
+      let allOwnerLips = await lipToken.methods.getOwnerLips(account).call()
+      let allLips = await lipToken.methods.getAllLips().call();
       dispatch(fetchDataSuccess({
         allLips: allLips,
         allOwnerLips: allOwnerLips

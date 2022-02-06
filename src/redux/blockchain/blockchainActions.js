@@ -32,8 +32,8 @@ export const handleConnect = () => {
     dispatch(connectRequest())
     if (window.ethereum) {
       let web3 = new Web3(window.ethereum)
-      // open pop-up request connect with metamask
       try {
+        // open pop-up request connect with metamask
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts"
         })
@@ -65,6 +65,7 @@ export const handleConnect = () => {
         console.log('err', error)
       }
     } else {
+      console.log('err');
       dispatch(connectFailed('Non-Ethereum browser detected. You should consider trying MetaMask!'))
     }
   }

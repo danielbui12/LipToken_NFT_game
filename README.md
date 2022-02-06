@@ -1,4 +1,5 @@
-.call() => method `get`
+# Lip Toen
 
-
-.send() => method `post`
+## How to run
+- 1. `./node_modules/.bin/truffle migrate --reset`
+- 2. `yarn start` or `npm start`

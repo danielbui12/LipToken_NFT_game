@@ -41,7 +41,7 @@ function LipLayout({ item, handleLevelUpLip, loading, viewOnly, handleChangeName
                 </button>
                 <button className="ml-1" disabled={loading} onClick={(e) => {
                   e.preventDefault()
-                  handleClearWaitTime(parseInt(item.id.toString()))
+                  handleClearWaitTime(item)
                 }}>Clear wait time</button>
               </div>
             </>
