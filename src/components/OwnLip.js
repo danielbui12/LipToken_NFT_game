@@ -70,24 +70,24 @@ function OwnLip() {
       })
   }
 
-  function handleClearWaitTime(_id) {
-    setLoading(true);
-    blockchain.lipToken.methods
-      .clearWaitTime(_id)
-      .send({
-        from: blockchain.account,
-        value: blockchain.web3.utils.toWei("0.015", "ether")
-      }, (err) => {
-        if (!err) {
-          setTimeout(() => {
-            dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
-          }, 500)
-        } else {
-          alert("Your account is not enough eth.")
-        }
-        setLoading(false);
-      })
-  }
+  // function handleClearWaitTime(_id) {
+  //   setLoading(true);
+  //   blockchain.lipToken.methods
+  //     .clearWaitTime(_id)
+  //     .send({
+  //       from: blockchain.account,
+  //       value: blockchain.web3.utils.toWei("0.015", "ether")
+  //     }, (err) => {
+  //       if (!err) {
+  //         setTimeout(() => {
+  //           dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
+  //         }, 500)
+  //       } else {
+  //         alert("Your account is not enough eth.")
+  //       }
+  //       setLoading(false);
+  //     })
+  // }
 
   return (
     <>
@@ -134,7 +134,7 @@ function OwnLip() {
                         item={item}
                         handleLevelUpLip={handleLevelUpLip}
                         handleChangeName={handleChangeName}
-                        handleClearWaitTime={handleClearWaitTime}
+                        // handleClearWaitTime={handleClearWaitTime}
                       />
                     )
                   })

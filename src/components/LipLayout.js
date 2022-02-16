@@ -29,7 +29,7 @@ function LipLayout({ item, handleLevelUpLip, loading, viewOnly, handleChangeName
               <div className="d-flex justify-content-between">
                 <button disabled={loading} onClick={(e) => {
                   e.preventDefault()
-                  handleLevelUpLip(parseInt(item.id.toString()))
+                  handleLevelUpLip(item)
                 }}>Level up</button>
                 <button className="change_name" onClick={(e) => {
                   e.preventDefault()
@@ -39,10 +39,10 @@ function LipLayout({ item, handleLevelUpLip, loading, viewOnly, handleChangeName
                   Change name
                   <span className="iconify" data-icon="gg:pen"></span>
                 </button>
-                <button className="ml-1" disabled={loading} onClick={(e) => {
+                {/* <button className="ml-1" disabled={loading} onClick={(e) => {
                   e.preventDefault()
                   handleClearWaitTime(item)
-                }}>Clear wait time</button>
+                }}>Clear wait time</button> */}
               </div>
             </>
           )
