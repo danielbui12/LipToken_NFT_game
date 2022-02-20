@@ -6,9 +6,12 @@ function LipLayout({
   item, handleLevelUpLip, 
   loading, viewOnly, 
   handleChangeName,
-  handleAttack
+  handleAttack, selectLip,
+  userLips, setSelectLip
 }) {
-  const solidityTime = Number(item.readyTime.toString() + "000")
+  const solidityTime = (item) => {
+    return Number(item.readyTime.toString() + "000")
+  }
   const jsTime = Number(new Date())
 
   return (
@@ -26,8 +29,8 @@ function LipLayout({
         {
           !viewOnly && (
             <s.TextDescription margin="6px 0">WAIT TIME: {
-              solidityTime < jsTime ? "READY" :
-                new Date(solidityTime).toDateString()
+              solidityTime(item) < jsTime ? "READY" :
+                new Date(solidityTime(item)).toDateString()
             }</s.TextDescription>
           )
         }
@@ -51,10 +54,40 @@ function LipLayout({
               </div>
             </>
           ) : (
-            <button className="ml-1" disabled={loading} onClick={(e) => {
-              e.preventDefault()
-              handleAttack(parseInt(item.id.toString()))
-            }}>Attack</button>
+            <s.Container fd={"row"} style={{ flexWrap: 'wrap' }} jc={"center"}>
+              <select value={selectLip} onChange={(e) => {
+                e.preventDefault()
+                const selectId = e.target.value
+                const currentItem = userLips.find(item => item.id.toString() === selectId)
+                if (!currentItem) return 
+                if (solidityTime(currentItem) < jsTime) {
+                  setSelectLip(selectId)
+                } else {
+                  alert('You have to wait util your lip is ready!')
+                }
+              }}>
+                <option value={''}>Select your lip</option>
+                {
+                  userLips.map((userLip) => {
+                    return (
+                      <option 
+                        value={parseInt(userLip.id.toString())}
+                        key={Math.random()}
+                        dangerouslySetInnerHTML={{
+                          __html: `ID: ${userLip.id.toString()}\nLEVEL: ${userLip.level}`
+                        }}
+                      >
+                        
+                      </option>
+                    )
+                  })
+                }
+              </select>
+              <button className="ml-1" disabled={loading} onClick={(e) => {
+                e.preventDefault()
+                handleAttack(parseInt(item.id.toString()))
+              }}>Attack</button>
+            </s.Container>
           )
         }
       </s.Container>

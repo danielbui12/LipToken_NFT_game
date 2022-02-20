@@ -46,6 +46,7 @@ function OwnLip() {
           dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
           alert("It might be take a few second to update your NFT!")
         } else {
+          console.log('level up err', err);
           alert("You have to wait 1 day to level up your lip")
         }
         setLoading(false);
@@ -56,14 +57,14 @@ function OwnLip() {
     if (!_newName) return
     setLoading(true);
     blockchain.lipToken.methods
-      .changeName(_id, _newName).call({
+      .changeName(_id, _newName).send({
         from: blockchain.account
       }, (err) => {
         if (!err) {
-          setTimeout(() => {
-            dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
-          }, 500)
+          alert("It might be take a few second to update your NFT!")
+          dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
         } else {
+          console.log('change name err', err);
           alert("Your lip must be at least level 2 to change it's name.")
         }
         setLoading(false);
@@ -77,8 +78,8 @@ function OwnLip() {
           <main role="main" className="col-lg-12 d-flex text-center">
             <div className="content mr-auto ml-auto">
               {
-                !blockchain.account ||
-                  !blockchain.lipToken ? (
+                (!blockchain.account ||
+                  !blockchain.lipToken) ? (
                   <button onClick={(e) => {
                     e.preventDefault()
                     dispatch(handleConnect())
@@ -91,38 +92,36 @@ function OwnLip() {
                       e.preventDefault()
                       mintNFT("BUI HUY TUNG :)")
                     }}>Create new random lip</button>
+                    {
+                      blockchain.errMesg && (
+                        <>
+                          <s.SpacerXSmall />
+                          <s.TextDescription>{blockchain.errMesg}</s.TextDescription>
+                        </>
+                      )
+                    }
+
+                    <s.SpacerSmall />
+                    <s.Container fd={"row"} style={{ flexWrap: 'wrap', gap: '3em' }} jc={"center"}>
+
+                      {
+                        data.allOwnerLips && data.allOwnerLips.map(item => {
+                          return (
+                            <LipLayout
+                              loading={loading}
+                              key={Math.random()}
+                              item={item}
+                              handleLevelUpLip={handleLevelUpLip}
+                              handleChangeName={handleChangeName}
+                            />
+                          )
+                        })
+                      }
+                    </s.Container>
                   </>
                 )
               }
-              {
-                blockchain.errMesg && (
-                  <>
-                    <s.SpacerXSmall />
-                    <s.TextDescription>{blockchain.errMesg}</s.TextDescription>
-                  </>
-                )
-              }
-
-              <s.SpacerSmall />
-              <s.Container fd={"row"} style={{ flexWrap: 'wrap', gap: '3em' }} jc={"center"}>
-
-                {
-                  data.allOwnerLips && data.allOwnerLips.map(item => {
-                    return (
-                      <LipLayout
-                        loading={loading}
-                        key={Math.random()}
-                        item={item}
-                        handleLevelUpLip={handleLevelUpLip}
-                        handleChangeName={handleChangeName}
-                        // handleClearWaitTime={handleClearWaitTime}
-                      />
-                    )
-                  })
-                }
-              </s.Container>
             </div>
-
           </main>
         </div>
       </div>

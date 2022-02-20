@@ -9,7 +9,7 @@ function WorldLip() {
   const blockchain = useSelector(state => state.blockchain)
   const data = useSelector(state => state.data)
   const [loading, setLoading] = React.useState(true)
-
+  const [selectLip, setSelectLip] = React.useState(null)
   React.useEffect(() => {
     if (blockchain.account && blockchain.lipToken) {
       dispatch(handleFetchData(blockchain.lipToken, blockchain.account))
@@ -18,10 +18,14 @@ function WorldLip() {
   }, [dispatch, blockchain.account, blockchain.lipToken]);
   
   function handleAttack(enemyId) {
+    if (selectLip === null || selectLip === undefined) {
+      alert("Please select lip you want to fight!")
+      return
+    }
     setLoading(true);
     blockchain.lipToken.methods
-      .attack(parseInt(data.allOwnerLips[0].id.toString()), enemyId)
-      .call({
+      .attack(parseInt(selectLip), enemyId)
+      .send({
         from: blockchain.account
       }, (err, val) => {
         if (!err) {
@@ -30,11 +34,17 @@ function WorldLip() {
           else alert("You won")
           dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
         } else {
-          alert(err.data.message.replace("VM Exception while processing transaction: revert", ""))
+          let errMsg = err.code === -32603  ?
+          "Error when send message to server" :
+          err.data.message.replace("VM Exception while processing transaction: revert", "")
+
+          alert(errMsg)
         }
         setLoading(false);
       })
   }
+
+  if (!blockchain.account) return <></>
 
   return (
     <>
@@ -53,7 +63,10 @@ function WorldLip() {
                         item={item}
                         key={Math.random()}
                         viewOnly
+                        userLips={data.allOwnerLips}
                         handleAttack={handleAttack}
+                        setSelectLip={setSelectLip}
+                        selectLip={selectLip}
                       />
                     )
                   })

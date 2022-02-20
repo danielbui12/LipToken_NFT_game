@@ -15,7 +15,7 @@ contract LipAttack is LipHelper {
   function attack(uint256 _lipId, uint256 _targetId) external onlyOwnerOf(_lipId) returns(int) {
     Lip storage myLip = lips[_lipId];
     Lip storage enemyLip = lips[_targetId];
-    require(_isReady(myLip));
+    require(_isReady(myLip), "Your lip is not ready");
     require(myLip.level == enemyLip.level, "Only the same level can fight");
     uint256 rand = randMod(100);
     int isWin = -1;

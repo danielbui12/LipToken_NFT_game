@@ -5,6 +5,7 @@ import OwnLip from './OwnLip'
 import Layout from './Layout';
 import WorldLip from './WorldLip';
 import './App.css'
+import Transfer from './Transfer';
 
 const routes = {
   OWNLIP: {
@@ -14,6 +15,10 @@ const routes = {
   WORLDLIP: {
     component: WorldLip,
     path: '/world-lip'
+  },
+  TRANSFER: {
+    component: Transfer,
+    path: '/transfer'
   }
 }
 

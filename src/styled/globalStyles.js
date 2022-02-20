@@ -54,6 +54,7 @@ export const TextTitle = styled.p`
   color: var(--white);
   font-size: 20px;
   font-weight: 500;
+  margin: ${({ margin }) => (margin ? margin : 'auto')};
 `;
 
 export const TextSubTitle = styled.p`

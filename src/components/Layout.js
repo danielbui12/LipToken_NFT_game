@@ -24,7 +24,7 @@ export default function Layout({ Component, setGlobalRoute, ...rest }) {
         </ul>
       </nav>
       {
-        blockchain.account && (
+        blockchain.account && blockchain.lipToken && (
           <div className='d-flex mt-5 w-100 justify-content-center'>
             <button onClick={() => setGlobalRoute("/")}>Your Lips</button>
             <button onClick={() => setGlobalRoute("/world-lip")}>Enemy Lips</button>
