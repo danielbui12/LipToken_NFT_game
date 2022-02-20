@@ -43,9 +43,8 @@ function OwnLip() {
         value: blockchain.web3.utils.toWei((0.01 * lip.level).toString(), "ether")
       }, (err) => {
         if (!err) {
-          setTimeout(() => {
-            dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
-          }, 300)
+          dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
+          alert("It might be take a few second to update your NFT!")
         } else {
           alert("You have to wait 1 day to level up your lip")
         }
@@ -57,7 +56,7 @@ function OwnLip() {
     setLoading(true);
     blockchain.lipToken.methods
       .changeName(_id, _newName).call({
-        from: blockchain.account,
+        from: blockchain.account
       }, (err) => {
         if (!err) {
           setTimeout(() => {
@@ -69,25 +68,6 @@ function OwnLip() {
         setLoading(false);
       })
   }
-
-  // function handleClearWaitTime(_id) {
-  //   setLoading(true);
-  //   blockchain.lipToken.methods
-  //     .clearWaitTime(_id)
-  //     .send({
-  //       from: blockchain.account,
-  //       value: blockchain.web3.utils.toWei("0.015", "ether")
-  //     }, (err) => {
-  //       if (!err) {
-  //         setTimeout(() => {
-  //           dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
-  //         }, 500)
-  //       } else {
-  //         alert("Your account is not enough eth.")
-  //       }
-  //       setLoading(false);
-  //     })
-  // }
 
   return (
     <>

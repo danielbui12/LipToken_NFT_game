@@ -2,7 +2,12 @@ import React from "react";
 import LipRenderer from "./lipRenderer";
 import * as s from '../styled/globalStyles'
 
-function LipLayout({ item, handleLevelUpLip, loading, viewOnly, handleChangeName, handleClearWaitTime }) {
+function LipLayout({ 
+  item, handleLevelUpLip, 
+  loading, viewOnly, 
+  handleChangeName,
+  handleAttack
+}) {
   const solidityTime = Number(item.readyTime.toString() + "000")
   const jsTime = Number(new Date())
 
@@ -18,12 +23,16 @@ function LipLayout({ item, handleLevelUpLip, loading, viewOnly, handleChangeName
         <s.TextDescription margin="6px 0">
           NAME: {item.name}
         </s.TextDescription>
-        <s.TextDescription margin="6px 0">WAIT TIME: {
-          solidityTime < jsTime ? "READY" :
-            new Date(solidityTime).toDateString()
-        }</s.TextDescription>
         {
           !viewOnly && (
+            <s.TextDescription margin="6px 0">WAIT TIME: {
+              solidityTime < jsTime ? "READY" :
+                new Date(solidityTime).toDateString()
+            }</s.TextDescription>
+          )
+        }
+        {
+          !viewOnly ? (
             <>
               <s.SpacerXSmall />
               <div className="d-flex justify-content-between">
@@ -39,12 +48,13 @@ function LipLayout({ item, handleLevelUpLip, loading, viewOnly, handleChangeName
                   Change name
                   <span className="iconify" data-icon="gg:pen"></span>
                 </button>
-                {/* <button className="ml-1" disabled={loading} onClick={(e) => {
-                  e.preventDefault()
-                  handleClearWaitTime(item)
-                }}>Clear wait time</button> */}
               </div>
             </>
+          ) : (
+            <button className="ml-1" disabled={loading} onClick={(e) => {
+              e.preventDefault()
+              handleAttack(item)
+            }}>Attack</button>
           )
         }
       </s.Container>

@@ -27,7 +27,8 @@ export default function Layout({ Component, setGlobalRoute, ...rest }) {
         blockchain.account && (
           <div className='d-flex mt-5 w-100 justify-content-center'>
             <button onClick={() => setGlobalRoute("/")}>Your Lips</button>
-            <button onClick={() => setGlobalRoute("/world-lip")}>World Lips</button>
+            <button onClick={() => setGlobalRoute("/world-lip")}>Enemy Lips</button>
+            <button onClick={() => setGlobalRoute("/transfer")}>Transfer</button>
           </div>
         )
       }

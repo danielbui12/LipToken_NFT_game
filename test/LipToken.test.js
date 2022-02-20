@@ -1,6 +1,6 @@
 const { assert } = require('chai');
 
-const LipToken = artifacts.require('./LipToken.sol')
+const LipToken = artifacts.require('./lipattack.sol')
 
 require('chai')
   .use(require('chai-as-promised'))
@@ -29,24 +29,25 @@ contract('Lip Token', (accounts) => {
     })
   });
 
-  describe("lip token", () => {
-    let result;
-    before(async () => {
-      result = await LipToken._createLip("testing");
-    });
+  // describe("lip token", () => {
+  //   let result;
+  //   before(async () => {
+  //     result = await LipToken.createRandomLip("testing");
+  //   });
 
-    it("create lip", async () => {
-      // SUCESS
-      const event = result.logs[0].args;
-      assert.equal(event.id.toNumber(), 0, 'id is correct');
-      assert.equal(event.name, "testing", 'name is correct');
-    });
+  //   it("create lip", async () => {
+  //     // SUCESS
+  //     const event = result.logs[0].args;
+  //     console.log(event.id.toNumber());
+  //     assert.equal(event.id.toNumber(), 0, 'id is correct');
+  //     assert.equal(event.name, "testing", 'name is correct');
+  //   });
 
-    //check from Struct
-    it('lists lips', async () => {
-      const lip = await LipToken.lips(0);
-      assert.equal(lip.id.toNumber(), 0, 'id is correct');
-      assert.equal(lip.name, "testing", 'name is correct');
-    });
-  })
+  //   //check from Struct
+  //   it('lists lips', async () => {
+  //     const lip = await LipToken.lips(0);
+  //     assert.equal(lip.id.toNumber(), 0, 'id is correct');
+  //     assert.equal(lip.name, "testing", 'name is correct');
+  //   });
+  // })
 })

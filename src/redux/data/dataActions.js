@@ -24,9 +24,9 @@ export const handleFetchData = (lipToken, account) => {
     dispatch(fetchDataRequest())
     try {
       let allOwnerLips = await lipToken.methods.getOwnerLips(account).call()
-      let allLips = await lipToken.methods.getAllLips().call();
+      let enemyLips = await lipToken.methods.getEnemy(account).call();
       dispatch(fetchDataSuccess({
-        allLips: allLips,
+        enemyLips: enemyLips,
         allOwnerLips: allOwnerLips
       }))
     } catch (error) {

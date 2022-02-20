@@ -2,7 +2,7 @@ import { actionTypes } from './dataActions'
 
 const initialState = {
   loading: false,
-  allLips: [],
+  enemyLips: [],
   allOwnerLips: [],
   error: false,
   errorMsg: ""
@@ -19,7 +19,7 @@ const dataReducer = (state = initialState, action) => {
       return {
         ...initialState,
         loading: false,
-        allLips: action.payload.allLips,
+        enemyLips: action.payload.enemyLips,
         allOwnerLips: action.payload.allOwnerLips
       }
     case actionTypes.CHECK_DATA_FAILED:

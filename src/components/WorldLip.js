@@ -20,13 +20,14 @@ function WorldLip() {
   return (
     <>
       <div className="container-fluid mt-5">
+        <s.SpacerXSmall />
         <div className="row">
           <main role="main" className="col-lg-12 d-flex text-center">
             <div className="content mr-auto ml-auto">
               <s.SpacerSmall />
               <s.Container fd={"row"} style={{ flexWrap: 'wrap', gap: '3em' }} jc={"center"}>
                 {
-                  data.allLips && data.allLips.map(item => {
+                  data.enemyLips && data.enemyLips.map(item => {
                     return (
                       <LipLayout
                         loading={loading}

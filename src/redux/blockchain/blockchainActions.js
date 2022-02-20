@@ -1,5 +1,5 @@
 import Web3 from "web3"
-import LipToken from '../../abis/LipToken.json'
+import LipToken from '../../abis/LipAttack.json'
 
 export const actionTypes = Object.freeze({
   CONNECTION_REQUEST: "CONNECTION_REQUEST",
