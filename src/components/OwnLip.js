@@ -40,7 +40,7 @@ function OwnLip() {
       .levelUp(parseInt(lip.id.toString()))
       .send({
         from: blockchain.account,
-        value: blockchain.web3.utils.toWei((0.01 * lip.level).toString(), "ether")
+        value: blockchain.web3.utils.toWei("0.01", "ether")
       }, (err) => {
         if (!err) {
           dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
@@ -53,6 +53,7 @@ function OwnLip() {
   };
 
   function handleChangeName(_id, _newName) {
+    if (!_newName) return
     setLoading(true);
     blockchain.lipToken.methods
       .changeName(_id, _newName).call({

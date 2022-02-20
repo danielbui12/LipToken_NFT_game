@@ -16,6 +16,25 @@ function WorldLip() {
     }
     setLoading(false)
   }, [dispatch, blockchain.account, blockchain.lipToken]);
+  
+  function handleAttack(enemyId) {
+    setLoading(true);
+    blockchain.lipToken.methods
+      .attack(parseInt(data.allOwnerLips[0].id.toString()), enemyId)
+      .call({
+        from: blockchain.account
+      }, (err, val) => {
+        if (!err) {
+          if (val) val = parseInt(val.toString()) 
+          if (val === -1) alert("You lose")
+          else alert("You won")
+          dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
+        } else {
+          alert(err.data.message.replace("VM Exception while processing transaction: revert", ""))
+        }
+        setLoading(false);
+      })
+  }
 
   return (
     <>
@@ -34,6 +53,7 @@ function WorldLip() {
                         item={item}
                         key={Math.random()}
                         viewOnly
+                        handleAttack={handleAttack}
                       />
                     )
                   })

@@ -41,9 +41,9 @@ contract LipHelper is LipFactory {
     _triggerCooldown(lip);
   }
 
-  function changeName(uint256 _lipId, string memory _newName)
-    public
-    aboveLevel(1, _lipId)
+  function changeName(uint256 _lipId, string calldata _newName)
+    external
+    aboveLevel(2, _lipId)
     onlyOwnerOf(_lipId)
   {
     Lip storage lip = lips[_lipId];

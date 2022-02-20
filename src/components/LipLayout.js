@@ -53,7 +53,7 @@ function LipLayout({
           ) : (
             <button className="ml-1" disabled={loading} onClick={(e) => {
               e.preventDefault()
-              handleAttack(item)
+              handleAttack(parseInt(item.id.toString()))
             }}>Attack</button>
           )
         }
