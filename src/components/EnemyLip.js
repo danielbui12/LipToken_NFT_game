@@ -45,7 +45,7 @@ function EnemyLip() {
   }
 
   if (!blockchain.account) return <></>
-  console.log('data.allOwnerLips', data.allOwnerLips);
+
   return (
     <>
       <div className="container-fluid mt-5">

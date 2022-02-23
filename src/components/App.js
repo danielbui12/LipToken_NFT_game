@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styled/reset.css'
 import '../styled/theme.css'
+import './responsive.css'
 import OwnLip from './OwnLip'
 import Layout from './Layout';
 import './App.css'

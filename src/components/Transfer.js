@@ -32,45 +32,36 @@ export default function Transfer() {
         setLoading(false)
       })
   }
-
   return (
     <s.Container js="center" ai="center" >
       <s.SpacerMedium/>
-      <form 
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'column'
-        }}
+      <form
+        className='transfer_container'
         onSubmit={handleTransferLip}
       >
-        <table>
-          <tbody>
-            <tr>
-              <td><s.TextSubTitle><label htmlFor='from'>Select your lip: </label></s.TextSubTitle></td>
-              <td>
-                <select id="from" required>
-                  {data.allOwnerLips.map(item => {
-                    return (
-                      <option
-                        value={item.id.toString()}
-                        key={Math.random()}
-                        dangerouslySetInnerHTML={{
-                          __html: `ID: ${item.id.toString()}    NAME: ${item.name}    RARITY: ${item.rarity}`
-                        }}
-                      />
-                    )
-                  })}
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td><s.TextSubTitle><label htmlFor='to'>To: </label></s.TextSubTitle></td>
-              <td><input id="to" required placeholder='Address'/></td>
-            </tr>
-          </tbody>
-        </table>
-        <input disabled={loading} type="submit" style={{margin: 'auto', marginTop: '1em'}}/>
+        <div className='input_container'>
+          <s.TextSubTitle><label htmlFor='from'>Select your lip: </label></s.TextSubTitle>        
+          <select id="from" required>
+            <option value={""}>Select your lip</option>
+            {data.allOwnerLips && data.allOwnerLips.length > 0 && data.allOwnerLips.map(item => {
+              return (
+                <option
+                  value={item.id.toString()}
+                  key={Math.random()}
+                  dangerouslySetInnerHTML={{
+                    __html: `ID: ${item.id.toString()}    NAME: ${item.name}    RARITY: ${item.rarity}`
+                  }}
+                />
+              )
+            })}
+          </select>
+        </div>
+
+        <div className='input_container'>
+          <s.TextSubTitle><label htmlFor='to'>To: </label></s.TextSubTitle>
+          <input id="to" required placeholder='Address'/>
+        </div>
+        <input disabled={loading} type="submit" className='submit_btn'/>
       </form>
     </s.Container>
   )

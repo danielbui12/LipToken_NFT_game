@@ -6,11 +6,17 @@ const _color = window.origin + "/images/bg/_color.png"
 
 export default function Layout({ Component, setGlobalRoute, ...rest }) {
   const blockchain = useSelector(state => state.blockchain)
+  
+  function renderAccount(text) {
+    if (!text) return "0x0"
+    return text.slice(0, 4) + "..." + text.slice(text.length - 5, text.length - 1)
+  }
+
   return (
     <Screen image={_color}>
       <nav className="navbar navbar-dark bg-dark flex-md-nowrap p-0 shadow">
         <a
-          className="navbar-brand col-sm-3 col-md-2 mr-0"
+          className="symbol"
           href="http://facebook.com/huytung.novers"
           target="_blank"
           rel="noopener noreferrer"
@@ -27,13 +33,15 @@ export default function Layout({ Component, setGlobalRoute, ...rest }) {
             </div>
           )
         }
-        <ul className="navbar-nav px-3 d-flex flex-row">
-          <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
-            <small className="text-muted"><TextSubTitle pd="20px 25px">{blockchain.account || "0x0"}</TextSubTitle></small>
+        <ul className="navbar-nav d-flex flex-row">
+          <li className="nav-item text-nowrap d-sm-block">
+            <small className="text-muted">
+              <TextSubTitle pd="20px 25px">{renderAccount(blockchain.account)}</TextSubTitle>
+            </small>
           </li>
           {
             blockchain.account && blockchain.lipToken && (
-            <li className='nav-item text-nowrap d-none d-sm-none d-sm-block ml-3'>
+            <li className='nav-item text-nowrap d-sm-block ml-3'>
               <button className='log_out'>Log out</button>
             </li>
             )

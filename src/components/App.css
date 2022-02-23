@@ -20,14 +20,20 @@ td, th {
   padding: 8px;
 }
 
+.symbol {
+  margin-left: 8px;
+  min-width: fit-content;
+}
+
 .button__header {
   gap: 10px;
 }
 
+
 .button__header button, .log_out {
   background-color: transparent;
   color: aliceblue;
-  font-weight: 500;
+  font-weight: 700;
   padding: 20px 25px;
   text-transform: uppercase;
 }
@@ -54,6 +60,7 @@ td, th {
   animation: light 1.5s ease-in-out infinite alternate;
   font-size: 40px !important;
   line-height: 45px;
+  text-transform: uppercase;
 }
 
 @keyframes light {
@@ -80,6 +87,7 @@ td, th {
   background-color: rgb(141, 141, 219);
   color:aliceblue;
   font-weight: 600 !important;
+  text-transform: capitalize;
 }
 
 .level_up_button {
@@ -145,4 +153,52 @@ td, th {
   padding: 4px 15px;
   font-size: 14px;
   border-radius: 2px;
+}
+
+.transfer_container {
+  display: flex;
+  flex-direction: column;
+  min-width: 500px;
+  padding-top: 40px;
+}
+        
+.input_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2em;
+}
+
+.input_container p {
+  width: 30%;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.input_container select, input:not(.submit_btn) {
+  width: 70%;
+  border: 1px solid #ccc;
+  padding-left: 8px;
+  font-size: 18px;
+  line-height: 24px;
+  height: 40px;
+}
+
+.submit_btn {
+  margin: auto; 
+  margin-top: 1em;
+  padding: 10px 18px;
+  background-color: #ff4d4f;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 16px;
+  line-height: 24px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.submit_btn:hover {
+  opacity: .8;
 }
