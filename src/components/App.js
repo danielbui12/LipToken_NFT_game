@@ -3,14 +3,19 @@ import '../styled/reset.css'
 import '../styled/theme.css'
 import OwnLip from './OwnLip'
 import Layout from './Layout';
-import WorldLip from './WorldLip';
 import './App.css'
 import Transfer from './Transfer';
+import EnemyLip from './EnemyLip';
+import WorldLip from './WorldLip';
 
 const routes = {
   OWNLIP: {
     component: OwnLip,
     path: "/"
+  },
+  ENEMYLIP: {
+    component: EnemyLip,
+    path: '/enemy-lip'
   },
   WORLDLIP: {
     component: WorldLip,

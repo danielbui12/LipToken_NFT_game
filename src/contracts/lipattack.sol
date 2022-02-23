@@ -22,7 +22,7 @@ contract LipAttack is LipHelper {
     // if rand < 70 => you win else enemy win
     if (rand <= attackVictoryProbability) {
       myLip.winCount = myLip.winCount+1;
-      myLip.level = myLip.level + 1;
+      myLip.level++;
       enemyLip.lossCount = enemyLip.lossCount + 1;
       isWin = 1;
     } else {

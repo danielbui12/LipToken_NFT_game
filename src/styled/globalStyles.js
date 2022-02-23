@@ -61,6 +61,7 @@ export const TextSubTitle = styled.p`
   color: var(--white);
   font-size: 16px;
   font-weight: 500;
+  margin: ${({ pd }) => (pd ? pd : 'auto')};
 `;
 
 export const TextDescription = styled.p`

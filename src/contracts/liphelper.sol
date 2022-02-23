@@ -50,8 +50,35 @@ contract LipHelper is LipFactory {
     lip.name = _newName;
   }
 
+    function quickSort(Lip[] memory arr, uint256 left, uint256 right) pure internal {
+    uint256 i = left;
+    uint256 j = right;
+    if (i == j) return;
+    Lip memory pivot = arr[left + (right - left) / uint256(2)];
+    while (i <= j) {
+      while (arr[i].level < pivot.level) i++;
+      while (pivot.level < arr[j].level) j--;
+      if (i <= j) {
+        (arr[i], arr[j]) = (arr[j], arr[i]);
+        i++;
+        j--;
+      }
+    }
+    if (left < j)
+      quickSort(arr, left, j);
+    if (i < right)
+      quickSort(arr, i, right);
+  } 
+
+  function sort(Lip[] memory data) public pure returns (Lip[] memory) {
+    quickSort(data, uint256(0), uint256(data.length - 1));
+    return data;
+  }
+
   function getAllLips() public view returns (Lip[] memory) {
-    return lips;
+    Lip[] memory sortData = lips;
+    sortData = sort(sortData);
+    return sortData;
   }
 
   function getEnemy(address _owner) public view returns (Lip[] memory) {
@@ -63,6 +90,7 @@ contract LipHelper is LipFactory {
         counter = counter + 1;
       }
     }
+    result = sort(result);
     return result;
   }
 
@@ -75,6 +103,7 @@ contract LipHelper is LipFactory {
         counter = counter + 1;
       }
     }
+    result = sort(result);
     return result;
   }
 }

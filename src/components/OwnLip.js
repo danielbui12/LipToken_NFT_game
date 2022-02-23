@@ -80,18 +80,18 @@ function OwnLip() {
               {
                 (!blockchain.account ||
                   !blockchain.lipToken) ? (
-                  <button onClick={(e) => {
+                  <button className='connect_btn' onClick={(e) => {
                     e.preventDefault()
                     dispatch(handleConnect())
                   }}>Connect to the game with metamask</button>
                 ) : (
                   <>
-                    <s.TextTitle>Welcome to the game</s.TextTitle>
+                    <s.TextTitle className='welcome_title'>Welcome to the game</s.TextTitle>
                     <s.SpacerSmall />
                     <button disabled={loading} onClick={(e) => {
                       e.preventDefault()
                       mintNFT("BUI HUY TUNG :)")
-                    }}>Create new random lip</button>
+                    }} className="create_button" >Create new random lip</button>
                     {
                       blockchain.errMesg && (
                         <>

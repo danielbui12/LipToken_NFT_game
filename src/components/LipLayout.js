@@ -7,7 +7,7 @@ function LipLayout({
   loading, viewOnly, 
   handleChangeName,
   handleAttack, selectLip,
-  userLips, setSelectLip
+  userLips, setSelectLip, noAttack
 }) {
   const solidityTime = (item) => {
     return Number(item.readyTime.toString() + "000")
@@ -38,56 +38,71 @@ function LipLayout({
           !viewOnly ? (
             <>
               <s.SpacerXSmall />
-              <div className="d-flex justify-content-between">
-                <button disabled={loading} onClick={(e) => {
+              <button 
+                disabled={loading} 
+                onClick={(e) => {
                   e.preventDefault()
                   handleLevelUpLip(item)
-                }}>Level up</button>
-                <button className="change_name" onClick={(e) => {
+                }}
+                className="level_up_button"
+              >Level up</button>
+              <button 
+                className="change_name" 
+                disabled={loading} 
+                className="change_name_button"
+                onClick={(e) => {
                   e.preventDefault()
                   const newName = window.prompt("Enter your new name: ")
                   handleChangeName(parseInt(item.id.toString()), newName)
-                }}>
-                  Change name
-                  <span className="iconify" data-icon="gg:pen"></span>
-                </button>
-              </div>
+                }}
+              >
+                Change name
+                <span className="iconify" data-icon="gg:pen"></span>
+              </button>
             </>
           ) : (
-            <s.Container fd={"row"} style={{ flexWrap: 'wrap' }} jc={"center"}>
-              <select value={selectLip} onChange={(e) => {
-                e.preventDefault()
-                const selectId = e.target.value
-                const currentItem = userLips.find(item => item.id.toString() === selectId)
-                if (!currentItem) return 
-                if (solidityTime(currentItem) < jsTime) {
-                  setSelectLip(selectId)
-                } else {
-                  alert('You have to wait util your lip is ready!')
-                }
-              }}>
-                <option value={''}>Select your lip</option>
-                {
-                  userLips.map((userLip) => {
-                    return (
-                      <option 
-                        value={parseInt(userLip.id.toString())}
-                        key={Math.random()}
-                        dangerouslySetInnerHTML={{
-                          __html: `ID: ${userLip.id.toString()}\nLEVEL: ${userLip.level}`
-                        }}
-                      >
-                        
-                      </option>
-                    )
-                  })
-                }
-              </select>
-              <button className="ml-1" disabled={loading} onClick={(e) => {
-                e.preventDefault()
-                handleAttack(parseInt(item.id.toString()))
-              }}>Attack</button>
-            </s.Container>
+            !noAttack ? (
+              <s.Container fd={"row"} style={{ flexWrap: 'wrap' }} jc={"space-between"}>
+                <select 
+                  value={selectLip} 
+                  onChange={(e) => {
+                    e.preventDefault()
+                    const selectId = e.target.value
+                    const currentItem = userLips.find(item => item.id.toString() === selectId)
+                    if (!currentItem) return 
+                    if (solidityTime(currentItem) < jsTime) {
+                      setSelectLip(selectId)
+                    } else {
+                      alert('You have to wait util your lip is ready!')
+                    }
+                  }}
+                  className="select_your_lip"
+                >
+                  <option value={''}>Select your lip</option>
+                  {
+                    userLips.map((userLip) => {
+                      return (
+                        <option 
+                          value={parseInt(userLip.id.toString())}
+                          key={Math.random()}
+                          dangerouslySetInnerHTML={{
+                            __html: `ID: ${userLip.id.toString()}\nLEVEL: ${userLip.level}`
+                          }}
+                        />
+                      )
+                    })
+                  }
+                </select>
+                <button 
+                  className="attack_button"
+                  disabled={loading} 
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleAttack(parseInt(item.id.toString()))
+                  }}
+                >Attack</button>
+              </s.Container>
+            ) : <></>
           )
         }
       </s.Container>
