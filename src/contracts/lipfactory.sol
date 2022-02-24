@@ -51,7 +51,7 @@ contract LipFactory is ERC721, Ownable {
           randomDna,
           1,
           randomRarity,
-          uint32(block.timestamp + 1 days),
+          0,
           0, 0
         )
       );

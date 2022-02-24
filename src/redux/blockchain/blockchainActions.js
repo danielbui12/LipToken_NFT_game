@@ -53,9 +53,6 @@ export const handleConnect = () => {
           window.ethereum.on("accountsChanged", (accounts) => {
             dispatch(updateAccount(accounts[0]))
           })
-          window.ethereum.on('chainChanged', () => {
-            window.location.reload()
-          })
         } else {
           // add listeners end
           dispatch(connectFailed("Change network to ETH."))

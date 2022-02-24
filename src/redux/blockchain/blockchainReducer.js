@@ -30,7 +30,7 @@ const blockchainReducer = (state = initialState, action) => {
       }
     case actionTypes.UPDATE_ACCOUNT:
       return {
-        ...initialState,
+        ...state,
         account: action.payload
       }
     default:

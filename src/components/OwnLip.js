@@ -65,7 +65,7 @@ function OwnLip() {
           dispatch(handleFetchData(blockchain.lipToken, blockchain.account));
         } else {
           console.log('change name err', err);
-          alert("Your lip must be at least level 2 to change it's name.")
+          alert("Your lip must be at least level 2 to change its name.")
         }
         setLoading(false);
       })

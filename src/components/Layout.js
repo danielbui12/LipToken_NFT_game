@@ -42,7 +42,7 @@ export default function Layout({ Component, setGlobalRoute, ...rest }) {
           {
             blockchain.account && blockchain.lipToken && (
             <li className='nav-item text-nowrap d-sm-block ml-3'>
-              <button className='log_out'>Log out</button>
+              <button onClick={() => window.location.reload()}className='log_out'>Log out</button>
             </li>
             )
           }

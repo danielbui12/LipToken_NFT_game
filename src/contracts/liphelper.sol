@@ -103,7 +103,6 @@ contract LipHelper is LipFactory {
         counter = counter + 1;
       }
     }
-    result = sort(result);
     return result;
   }
 }
