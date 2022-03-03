@@ -8,6 +8,5 @@
 > `./node_modules/.bin/truffle test`
 
 ## image and video test
-
-![alt text](https://github.com/augustustung/LipToken_NFT_game/blob/master/demo.png)
-![Watch the video](https://github.com/augustustung/LipToken_NFT_game/blob/master/demoVideo.mp4)
+![alt text](https://github.com/augustustung/LipToken_NFT_game/blob/master/public/demo.png)
+![Watch the video](https://github.com/augustustung/LipToken_NFT_game/blob/master/public/demoVideo.mp4)
